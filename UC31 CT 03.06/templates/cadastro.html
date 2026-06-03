@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cadastro</title>
+
+<style>
+body{
+    background: linear-gradient(120deg, #8ec5fc, #c9b6e4);
+    font-family: Arial;
+}
+
+.caixa{
+    width: 560px;
+    background: white;
+    margin: 40px auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px gray;
+}
+
+h1{
+    text-align: center;
+    color: #23395d;
+}
+
+input{
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+}
+
+button{
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    background: #356eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 17px;
+}
+
+button:hover{
+    background: #244eb0;
+}
+
+.erro{
+    color: darkred;
+    background: #ffdada;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.sucesso{
+    color: green;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="caixa">
+
+<h1>Cadastro de aluno</h1>
+
+{% for erro in erros %}
+<p class="erro">{{ erro }}</p>
+{% endfor %}
+
+<form method="POST" autocomplete="on">
+
+<input name="nome" placeholder="Nome completo" autocomplete="name">
+<input type="email" name="email" placeholder="E-mail" autocomplete="email">
+<input name="telefone" id="telefone" placeholder="(84) 99999-9999" maxlength="15">
+<input name="cpf" id="cpf" placeholder="123.456.789-00" maxlength="14">
+<input name="cidade" placeholder="Cidade">
+<input name="estado" placeholder="Estado">
+<input name="curso" placeholder="Curso">
+<input name="idade" placeholder="Idade">
+<input type="password" name="senha" placeholder="Senha">
+
+<button>Cadastrar</button>
+
+</form>
+
+{% if aluno %}
+
+<hr>
+
+<p class="sucesso">Cadastro realizado com sucesso!</p>
+
+<p>Nome: {{ aluno.nome }}</p>
+<p>Email: {{ aluno.email }}</p>
+<p>Telefone: {{ aluno.telefone }}</p>
+<p>CPF: {{ aluno.cpf }}</p>
+<p>Cidade: {{ aluno.cidade }}</p>
+<p>Estado: {{ aluno.estado }}</p>
+<p>Curso: {{ aluno.curso }}</p>
+<p>Idade: {{ aluno.idade }}</p>
+
+{% endif %}
+
+</div>
+
+<script>
+let cpf = document.getElementById("cpf")
+
+cpf.oninput = function(){
+    let v = cpf.value.replace(/\D/g, "")
+
+    if(v.length > 11){
+        v = v.slice(0, 11)
+    }
+
+    if(v.length > 9){
+        v = v.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, "$1.$2.$3-$4")
+    }else if(v.length > 6){
+        v = v.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3")
+    }else if(v.length > 3){
+        v = v.replace(/(\d{3})(\d+)/, "$1.$2")
+    }
+
+    cpf.value = v
+}
+
+let telefone = document.getElementById("telefone")
+
+telefone.oninput = function(){
+    let t = telefone.value.replace(/\D/g, "")
+
+    if(t.length > 11){
+        t = t.slice(0, 11)
+    }
+
+    if(t.length > 10){
+        t = t.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3")
+    }else if(t.length > 6){
+        t = t.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3")
+    }else if(t.length > 2){
+        t = t.replace(/(\d{2})(\d+)/, "($1) $2")
+    }
+
+    telefone.value = t
+}
+</script>
+
+</body>
+</html>
